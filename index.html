@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>canvas绘制文本图片</title>
+    <style type="text/css">
+        *{
+            margin:0;
+            padding:0;
+        }
+        body{
+            text-align:center;
+        }
+        canvas{
+            display:block;
+            margin:auto;
+            background:#000;
+            /*width:600px;*/
+            /*height:648px;*/
+        }
+        @font-face{
+            src:url("fonts/hychf.ttf");
+            font-family:hychf;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="600" height="648"></canvas>
+<!--<img src="images/0.jpg" id="img"/>-->
+<lable>请输入内容：</lable>
+<input type="text" id="txt" value="同学们"/>
+<lable>请选择背景</lable>
+<select name="" id="bg">
+    <option value="images/1.png">1.png</option>
+    <option value="images/2.png">2.png</option>
+    <option value="images/3.png">3.png</option>
+    <option value="images/4.png">4.png</option>
+    <option value="images/5.png">5.png</option>
+    <option value="images/6.png">6.png</option>
+</select>
+<script type="text/javascript">
+    var can = document.getElementById('canvas');
+    var txt = document.getElementById('txt');
+    var bg = document.getElementById('bg');
+//    var oImg = document.getElementById('img');
+    var ctx = can.getContext('2d');
+//    function draw(){
+//        ctx.drawImage(oImg,0,0);
+//    }
+    var oImg = new Image();
+    var oBg = new Image();
+//    console.log(oImg);
+    oImg.src='images/0.jpg';
+    oBg.src='images/2.png';
+    oBg.onload=function(){
+        draw();
+    }
+    function draw(){
+        ctx.drawImage(oImg,0,0);
+        oBg.src=bg.value;
+        //设置图片为fillstyle的颜色值
+        var color = ctx.createPattern(oBg,"repeat");
+        //设置颜色
+        ctx.fillStyle=color;
+        var padd=50;//文本距离画面两边的距离
+        //计算文字的尺寸
+        var ft=Math.ceil((can.width-padd*2)/txt.value.length);
+        //文本的大小尺寸：必须加上文字的类型 尺寸才能起作用
+        ctx.font=ft+"px hychf ";
+        //设置文本的垂直对齐基线
+        ctx.textBaseline="top";
+        //获取文本的真实宽度
+        var w=ctx.measureText(txt.value).width;
+        //计算文本绘制的坐标
+        var x=(can.width-w)/2;
+        var y=(can.height-ft)/2;
+        //绘制阴影
+        ctx.shadowOffsetX=10;//在水平方向的偏移
+        ctx.shadowOffsetY=10;//在垂直方向的偏移
+        ctx.shadowBlur=5;//阴影的模糊度
+        ctx.shadowColor="rgba(0,0,0,1)";
+        ctx.fillText(txt.value,x,y);//绘制实心的文本
+    }
+</script>
+</body>
+</html>
